@@ -2,19 +2,21 @@ package edu.escuelaing.AREP.webappexample;
 
 import edu.escuelaing.AREP.nextspring.GetMapping;
 
+
 public class MathServices {
-    @GetMapping("/square")
+    @GetMapping(value="/square")
     public static Double square(String n){
         Double number = Double.valueOf(n);
-        return number * number;
+        return number *number;
     }
-    @GetMapping("/PI")
+    @GetMapping(value="/PI")
     public static Double PI(String n){
-        //Double number = Double.valueOf(n);
+        Double number = Double.valueOf(n);
         return Math.PI;
     }
-    @GetMapping("/strlength")
+    @GetMapping(value="/strcount")
     public static String length(String s){
-       return "The length of the string is : "+s.length();
+        //Double number = Double.valueOf(n);
+        return "the length of string is:"+s.length();
     }
 }

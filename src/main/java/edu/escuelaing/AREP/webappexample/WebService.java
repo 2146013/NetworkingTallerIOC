@@ -2,9 +2,10 @@ package edu.escuelaing.AREP.webappexample;
 
 import edu.escuelaing.AREP.nextspring.GetMapping;
 
-public class WebService {
+
+class WebServices {
     @GetMapping("/fecha")
     public static String date(String s){
-        return java.time.LocalTime.now();
+        return java.time.LocalTime.now().toString();
     }
 }

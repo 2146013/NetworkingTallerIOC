@@ -23,7 +23,7 @@ public class HttpServer {
     private HttpServer(){
 
     }
-    private static HttpServer getInstance(){
+    public static HttpServer getInstance(){
         return _instance;
     }
 
@@ -66,6 +66,7 @@ public class HttpServer {
                 for(Method m: c.getDeclaredMethods()){
                     if(m.isAnnotationPresent(GetMapping.class)){
                         String uri = m.getAnnotation(GetMapping.class).value();
+                        System.out.println("loading service"+m+"with uri "+uri);
                         services.put(uri,m);
                     }
                 };
@@ -113,11 +114,17 @@ public class HttpServer {
         String response ="";
         //the path has the form: "/do/*"
         Method m = services.get(serviceURI.getPath().substring(3));
+        if(m==null){
+            return default404Message("service not found");
+        }
         try {
             response = m.invoke(null,serviceURI.getQuery()).toString();
         } catch (IllegalAccessException e) {
             Logger.getLogger(HttpServer.class.getName()).log(Level.SEVERE,"Component not found",e);
         } catch (InvocationTargetException e) {
+            Logger.getLogger(HttpServer.class.getName()).log(Level.SEVERE,"Component not found",e);
+        }
+        catch (IllegalArgumentException e) {
             Logger.getLogger(HttpServer.class.getName()).log(Level.SEVERE,"Component not found",e);
         }
         response = response = "HTTP/1.1 200 OK\r\n"
@@ -151,10 +158,29 @@ public class HttpServer {
             }
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
+            response = default404Message("page not found");
         }
         return response;
     }
-
+    public String default404Message(String msg){
+        String outputLine =
+                "HTTP/1.1 404 not found\r\n"
+                        + "Content-Type: text/html\r\n"
+                        + "\r\n"
+                        + "<!DOCTYPE html>"
+                        + "<html>"
+                        + " <head>"
+                        + " <title>TODO supply a title</title>"
+                        + " <meta charset=\"UTF-8\">"
+                        + " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+                        + " </head>"
+                        + " <body>"
+                        + " <div><h1>error404</h1></div>"
+                        + " "+msg+"\n"
+                        + " </body>"
+                        + "</html>";
+        return outputLine;
+    }
     public String defaultHttpMessage(){
         String outputLine =
                 "HTTP/1.1 200 OK\r\n"
