@@ -32,7 +32,7 @@ public class HttpServer {
     }
 
     public  void startServer(String[] args) throws IOException, URISyntaxException {
-        int port =35000;
+        int port = getPort();
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(port);
@@ -57,6 +57,12 @@ public class HttpServer {
 
 
         serverSocket.close();
+    }
+    static int getPort() {
+        if (System.getenv("PORT") != null) {
+            return Integer.parseInt(System.getenv("PORT"));
+        }
+        return 35000; //returns default port if heroku-port isn't set(i.e. on localhost)
     }
     private void loadComponents(String[] componentsList){
         for(String component: componentsList){

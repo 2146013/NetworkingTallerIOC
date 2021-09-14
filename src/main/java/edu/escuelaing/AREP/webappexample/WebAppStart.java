@@ -8,13 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WebAppStart {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             HttpServer.getInstance().startServer(args);
-        } catch (IOException e) {
-            Logger.getLogger(HttpServer.class.getName()).log(Level.SEVERE,"null",e);
-        } catch (URISyntaxException e) {
-            Logger.getLogger(HttpServer.class.getName()).log(Level.SEVERE,"null",e);
+        } catch (IOException ex) {
+            Logger.getLogger(WebAppStart.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(WebAppStart.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
